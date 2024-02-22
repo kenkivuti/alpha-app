@@ -105,7 +105,7 @@
                 },
                 fetch_products() {
                     this.loading = true
-                    axios.get("http://127.0.0.1:5000/products")
+                    axios.get("http://127.0.0.1:5000/product")
                         .then((response) => {
                             console.log("Response from API", response);
                             this.products = response.data;
