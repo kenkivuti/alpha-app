@@ -12,7 +12,7 @@
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="index.html">MY DUKA</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -51,11 +51,11 @@
                            <div class="mb-3">
                                <label for="name" class="form-label">product Name</label>
                                <input type="text" class="form-control" id="name" aria-describedby="emailHelp"
-                                   v-model="product_name" />
+                                   v-model="name" />
                            </div>
                            <div class="mb-3">
                                <label for="price" class="form-label">Price</label>
-                               <input type="number" class="form-control" id="price" v-model="product_price" />
+                               <input type="number" class="form-control" id="price" v-model="price" />
                            </div>
                            <button type="submit" class="btn btn-primary" @click="add_product">ADD</button>
                        </form>
@@ -97,29 +97,15 @@
 
   createApp({
     data() {
-      
+      let name = null;
+      let price = null;
       let loading = false;
       let prods = null;
-      let name = null
-      let price = null
       // console.log("called on data");
-      return { loading, prods , name , price }
+      return { loading, prods ,name,price}
     },
 
     methods: {
-      renderchat(){
-        let chart_data = {
-      labels: ['January', 'February', 'March', 'April', 'May'],
-      datasets: [{
-        label: 'Sample Data',
-        backgroundColor: 'rgba(75, 192, 192, 0.4)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        data: [65, 59, 80, 81, 56],
-      }],
-    };
-    
-    },
-  
    
 
         fetchproducts(){
@@ -136,34 +122,35 @@
             });
 
         },
-
         add_product() {
-                    this.loading = true
+                    this.loading = true;
                     axios.post("http://127.0.0.1:5000/product", {
                         name: this.name,
                         price: this.price
                     })
-                        .then((response) => {
+                        .then(response => {
                             console.log("product added:", response.data);
                             this.name = '';
-                            this.price = ''
-                            //  after adding product refresh
-                            this.fetchproducts();
+                            this.price = '';
+                            this.fetch_products();
+                            
+                            
                         })
-                        .catch((error) => {
+                        .catch(error => {
                             console.error("Error adding data:", error);
                             this.loading = false;
                         });
+                },
+                close_modal() {
+                    $('#exampleModal').modal('hide');
+                },
+        
 
     },
     created() {
-        
         this.fetchproducts();
-        this.add_product();
     }, 
-    mounted(){
-      this.renderchat()
-    }
+   
 
   }).mount('#app')
 </script>
