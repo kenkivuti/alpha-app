@@ -43,6 +43,12 @@
             <li class="nav-item">
               <a class="nav-link" href="sales.html">sales</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="login.html">login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="register.html">register</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -148,11 +154,28 @@
 
             },
         
-        mounted() {
-          this.renderChart();
-          this.renderlineChart();
+            mounted() {
+                console.log(localStorage.getItem('access_token'))
+                token = (localStorage.getItem('access_token'))
+
+                if (token) {
+                    const tokenData = JSON.parse(atob(token.split(".")[1])); // Decoding base64 URL    
+                    const currentTimestamp = Math.floor(Date.now() / 1000); // Current time in seconds
+                    if (tokenData.exp < currentTimestamp) {
+                        window.location.href = 'login.html'
+                    } else {
+                        this.renderChart();
+                        this.renderLineChart();
           
-        },
+
+                    }
+                }
+                else {
+                    window.location.href = 'login.html'
+
+                }
+
+            },
       }).mount("#app");
     </script>
 
